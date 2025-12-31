@@ -123,7 +123,8 @@ class StabState2:
                     self.phaseVec[r] = (self.phaseVec[r]+1)%2
 
     def inner_zero(self):
-        M = self.stabVecs[:self.n,self.n: 2*self.n].copy()
+        # M = self.stabVecs[:self.n,self.n: 2*self.n].copy()
+        M = self.stabVecs[:,:self.n].copy()
         i,j = 0,0
         while i<self.n and j<self.n:
             if M[i,j]==0:
