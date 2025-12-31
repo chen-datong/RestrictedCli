@@ -130,6 +130,7 @@ def experiment_qubit_stab_XYZ(rho0,finite_field,UNum,repNum):
             rho1.stabVecs = new_stabVecs
             a = np.random.randint(2, size=2*n, dtype=int)
             rho1.phase_update(a)
+            rho1.check_commutator()
             p = rho1.zbasis_measurement()
             f = (pow(2,n)+1)*p-1
             mean+=f
@@ -315,7 +316,7 @@ def main_XZ(d,n,idx):
 if __name__=='__main__':
     for idx in range(1):
         main_XYZ(2,5,idx)
-    for idx in range(1):
-        main_multilayer(2,5,idx)
+    # for idx in range(1):
+    #     main_multilayer(2,5,idx)
     
 

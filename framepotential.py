@@ -20,7 +20,7 @@ def single_LC_3rdFP(n, layer, finite_field):
     """
     stabVecs, phaseVec = zero(2,n)
     new_stabVecs = restricted_Clifford_update(stabVecs,finite_field,n,n)
-    rho = StabState2(n,new_stabVecs,phaseVec)
+    rho = StabState2(n, new_stabVecs,phaseVec)
     a = np.random.randint(2, size=2*n, dtype=int)
     rho.phase_update(a)
     for _ in range(layer):
@@ -31,10 +31,12 @@ def single_LC_3rdFP(n, layer, finite_field):
             elif flag[k]==2:
                 rho.Phase(k)
                 rho.Hadamard(k)
-        new_stabVecs = restricted_Clifford_update(rho.stabVecs,finite_field,n,n)
+        new_stabVecs = restricted_Clifford_update(rho.stabVecs.copy(),finite_field,n,n)
         rho.stabVecs = new_stabVecs
         a = np.random.randint(2, size=2*n, dtype=int)
         rho.phase_update(a)
+        rho.check_commutator()
+
     p = rho.inner_zero()
     return pow(p, 3)
 
@@ -83,5 +85,12 @@ def experiment_LC(n_start, n_end, layer, samples):
         fp.append(LC_3rdFP(n, layer, samples))
     print(fp)
 
+def experiment_H(n_start, n_end, layer, samples):
+    fp = []
+    for n in range(n_start, n_end+1):
+        fp.append(H_3rdFP(n, layer, samples))
+    print(fp)
+
 if __name__ == "__main__":
-    experiment_LC(3, 10, 1, 1000)
+    experiment_LC(3, 5, 1, 2)
+    # experiment_H(3, 10, 1, 1000)
