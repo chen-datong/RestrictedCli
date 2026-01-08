@@ -1,5 +1,5 @@
 from hmac import new
-from mpi4py import MPI
+# from mpi4py import MPI
 import numpy as np
 # from randomSL_sage import random_SL_transformation
 from randomSL import *
@@ -8,6 +8,10 @@ from stabilizer_state import *
 import time
 import utils
 from tqdm import tqdm
+try:
+    from mpi4py import MPI
+except Exception:
+    MPI = None
 
 # prepare initial state
 def GHZ(d,n):
@@ -234,7 +238,7 @@ def qubit_stab_hadamard_all(n):
 def experiment_qubit_stab_XYZ(rho0,finite_field,UNum,repNum):
     n = rho0.n
     fidelities = []
-    for _ in range(repNum):
+    for _ in tqdm(range(repNum)):
         mean = 0
         for _ in range(UNum):
             new_stabVecs = restricted_Clifford_update(rho0.stabVecs.copy(),finite_field,n,n)
@@ -380,7 +384,7 @@ def main_XYZ(d,n,idx):
     size = comm.Get_size()
     rank = comm.Get_rank()
     
-    UNum, samNum, repNum = 1, 1, 5000
+    UNum, samNum, repNum = 1, 1, 10000
     stabVecs, phaseVec = zero(2,n)
     finite_field = FiniteField(d,n)
     rho0 = StabState2(n, stabVecs, phaseVec.copy())
@@ -445,10 +449,20 @@ def main_XZ(d,n,idx):
 
 
 if __name__=='__main__':
-    # for n in range(3, 11):
+    # for n in range(2, 3):
     #     main_XYZ(2,n,1)
-    for n in range(3, 4):
-        main_multilayer(2,n,2)
+    UNum, samNum, repNum = 1, 1, 50000
+    n=4
+    d=2
+    stabVecs, phaseVec = zero(2,n)
+    finite_field = FiniteField(d,n)
+    rho0 = StabState2(n, stabVecs, phaseVec.copy())
+    # np.random.seed(rank + n)
+    # 每个进程处理的实验次数
+    result = experiment_qubit_stab_XYZ(rho0, finite_field, UNum, repNum)
+    np.save(f'./data/XYZ/d={d},n={n},sample={repNum},XYZ.npy', result)
+    # for n in range(3, 4):
+        # main_multilayer(2,n,2)
     # for idx in range(20):
     #     print(f'Run {idx} now!')
     #     main_multilayer(2,3,idx)

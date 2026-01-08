@@ -125,7 +125,7 @@ if __name__ == "__main__":
     # analyze_distribution('./data/Hadamard/d=2,n=14,m=1.npy')
 
     # multilayer
-    # n = np.arange(3, 21)
+    # n = np.arange(3, 10)
     # Y = []
     # for m in [1]:
     #     Ym = []
@@ -138,9 +138,9 @@ if __name__ == "__main__":
     # for m in [1]:
     #     plt.plot(n,Y[m-1], marker='o', markersize=5, label=f'Numerical')
     # plt.plot(n, var3design(n), marker='s', markersize=5, label='3-design variance')
-    # # exact_h = {2: 0.500997, 3: 0.921422, 4: 1.60924, 5: 2.372015, 6: 3.355549, 7: 4.741013, 8: 4.980372, 9: 6.642699}
-    # # exact = var3design(n) + np.array([exact_h[i] for i in n])
-    # # plt.plot(n, exact, marker='^', markersize=5, label='Theoretical')
+    # exact_h = {2: 0.500150, 3: 0.932124, 4: 1.672027, 5: 2.587864, 6: 3.714565, 7: 4.732950, 8: 6.054775, 9: 6.642699}
+    # exact = var3design(n) + np.array([exact_h[i] for i in n])
+    # plt.plot(n, exact, marker='^', markersize=5, label='Theoretical')
     # plt.xlabel(r'$n$')
     # plt.ylabel('Variance')
     # # plt.title('d=2,n=50,N=20000,multilayer')
@@ -148,19 +148,22 @@ if __name__ == "__main__":
     # plt.show()
 
     # # XYZ
-    n = np.arange(3, 21)
+    n = np.arange(2, 10)
     Y = []
     for i in n:
-        data = np.load(f'./data/XYZ/d=2,n={i},XYZ.npy')
+        if i == 4:
+            data = np.load(f'./data/XYZ/d=2,n={i},sample=50000,XYZ.npy')
+        else:
+            data = np.load(f'./data/XYZ/d=2,n={i},XYZ.npy')
         var = np.var(data)
         Y.append(var)
     fig = plt.figure(figsize=(8,6))
     n_1 = np.arange(3, 11)
-    # exact_lc = {2: -0.000021, 3: 0.000095, 4: -0.473278, 5: -0.745237, 6: -0.573176, 7: 0.092401, 8: -0.944850, 9: -0.083193}
-    # exact = var3design(n) + np.array([exact_lc[i] for i in n])
+    exact_lc = {2: -0.000363, 3: -0.001063, 4: 0.111268, 5: 0.147949, 6: 0.147336, 7: 0.059895, 8: 0.057927, 9: 0.081064}
+    exact = var3design(n) + np.array([exact_lc[i] for i in n])
     plt.plot(n,Y, marker='o', markersize=5, label='Numerical')
     plt.plot(n, var3design(n), marker='s', markersize=5, label='3-design variance')
-    # plt.plot(n, exact, marker='^', markersize=5, label='Theoretical')
+    plt.plot(n, exact, marker='^', markersize=5, label='Theoretical')
     plt.legend()
     # plt.plot(n_1, UB, marker='^', markersize=5)
 
