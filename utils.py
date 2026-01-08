@@ -4,7 +4,7 @@ def commutator_t(x,y,d,m):
     # in z1,z2,...,zn,x1,x2,....,xn basis
     Jt = np.zeros((2*m,2*m),dtype=int)
     Jt[:m,m:2*m] = np.identity(m,dtype=int)
-    Jt[m:2*m,:m] = -np.identity(m,dtype=int)
+    Jt[m:2*m,:m] = np.identity(m,dtype=int)
     return (x@Jt@y)%d
 
 def divide(a,b,d):

@@ -7,7 +7,7 @@ class StabStated:
         self.d = d
         self.n = n
         self.divideList = divideList
-        self.stabVecs = stabVecs # global convention
+        self.stabVecs = stabVecs 
         self.phaseVec = phaseVec
 
     def copy(self):
@@ -52,7 +52,7 @@ class StabState2:
 
     def __init__(self,n,stabVecs,phaseVec):
         self.n = n
-        self.stabVecs = stabVecs # global convention
+        self.stabVecs = stabVecs # [Z|X] convention
         self.phaseVec = phaseVec
 
     def copy(self):
@@ -72,7 +72,8 @@ class StabState2:
         self.phaseVec = self.phaseVec%2
 
     def zbasis_measurement(self):
-        M = self.stabVecs[:,:self.n]
+        # M = self.stabVecs[:,:self.n]
+        M = self.stabVecs[:,self.n: 2*self.n].copy()
         i,j = 0,0
         while i<self.n and j<self.n:
             if M[i,j]==0:
@@ -113,17 +114,19 @@ class StabState2:
         self.stabVecs[:,it], self.stabVecs[:,self.n+it] = self.stabVecs[:,self.n+it].copy(), self.stabVecs[:,it].copy()
 
     def Phase(self, it):
-        for r in range(self.n):
-            if self.stabVecs[r,self.n+it]==0:   pass 
-            else:
-                if self.stabVecs[r,self.n+it]==0:
-                    self.stabVecs[r,self.n+it] = 1
-                else:
-                    self.stabVecs[r,self.n+it] = 0
-                    self.phaseVec[r] = (self.phaseVec[r]+1)%2
+        # for r in range(self.n):
+        #     if self.stabVecs[r,self.n+it]==0:   pass 
+        #     else:
+        #         if self.stabVecs[r,self.n+it]==0:
+        #             self.stabVecs[r,self.n+it] = 1
+        #         else:
+        #             self.stabVecs[r,self.n+it] = 0
+        #             self.phaseVec[r] = (self.phaseVec[r]+1)%2
+        self.phaseVec = (self.phaseVec+self.stabVecs[:,self.n+it]*self.stabVecs[:,it])%2
+        self.stabVecs[:, it] = (self.stabVecs[:, it] + self.stabVecs[:, self.n + it]) % 2
 
     def inner_zero(self):
-        M = self.stabVecs[:self.n,self.n: 2*self.n].copy()
+        M = self.stabVecs[:,self.n: 2*self.n].copy()
         # M = self.stabVecs[:,:self.n].copy()
         i,j = 0,0
         while i<self.n and j<self.n:

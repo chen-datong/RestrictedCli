@@ -1,7 +1,8 @@
 import numpy as np
-from randomSL_sage import random_SL_transformation
+from randomSL import random_SL_transformation
 from magic_state import *
 from qubit_magic import *
+import randomSL
 
 def GHZ(d,n):
     # in tableau basis
@@ -40,10 +41,14 @@ def restricted_Clifford_update(stabVecs,d,n,m):
     new_stabVecs[:,n:m], new_stabVecs[:,m+n:2*m] = stabVecs[:,n:m], stabVecs[:,m+n:2*m]
     return new_stabVecs
 
-d = 3
-n = 5
-stabVecs, phaseVec = GHZ(d,n)
-divideList = compute_divideList(d)
-new_stabVecs = restricted_Clifford_update(stabVecs,d,n,n)
-rho1 = StabStated(d,n,new_stabVecs,phaseVec,divideList)
-rho1.check_commutator()
+# d = 3
+# n = 5
+# stabVecs, phaseVec = GHZ(d,n)
+# divideList = compute_divideList(d)
+# new_stabVecs = restricted_Clifford_update(stabVecs,d,n,n)
+# rho1 = StabStated(d,n,new_stabVecs,phaseVec,divideList)
+# rho1.check_commutator()
+# d = 2
+# n = 4
+# finite_field = randomSL.FiniteField(d, n)
+# randomSL.check_sl_embedding_is_symplectic(finite_field, trials=10)
