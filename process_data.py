@@ -125,30 +125,31 @@ if __name__ == "__main__":
     # analyze_distribution('./data/Hadamard/d=2,n=14,m=1.npy')
 
     # multilayer
-    # n = np.arange(3, 10)
-    # Y = []
-    # for m in [1]:
-    #     Ym = []
-    #     for i in n:
-    #         data = np.load(f'./data/Hadamard/d=2,n={i},m={m}.npy')
-    #         var = np.var(data)
-    #         Ym.append(var)
-    #     Y.append(Ym)
-    # fig = plt.figure(figsize=(8,6))
-    # for m in [1]:
-    #     plt.plot(n,Y[m-1], marker='o', markersize=5, label=f'Numerical')
-    # plt.plot(n, var3design(n), marker='s', markersize=5, label='3-design variance')
-    # exact_h = {2: 0.500150, 3: 0.932124, 4: 1.672027, 5: 2.587864, 6: 3.714565, 7: 4.732950, 8: 6.054775, 9: 6.642699}
-    # exact = var3design(n) + np.array([exact_h[i] for i in n])
-    # plt.plot(n, exact, marker='^', markersize=5, label='Theoretical')
-    # plt.xlabel(r'$n$')
-    # plt.ylabel('Variance')
-    # # plt.title('d=2,n=50,N=20000,multilayer')
-    # plt.legend()
-    # plt.show()
+    n = np.arange(3, 14)
+    Y = []
+    for m in [1]:
+        Ym = []
+        for i in n:
+            data = np.load(f'./data/Hadamard/d=2,n={i},m={m}.npy')
+            var = np.var(data)
+            Ym.append(var)
+        Y.append(Ym)
+    fig = plt.figure(figsize=(8,6))
+    for m in [1]:
+        plt.plot(n,Y[m-1], marker='o', markersize=5, label=f'Numerical')
+    plt.plot(n, var3design(n), marker='s', markersize=5, label='3-design variance')
+    exact_h = {2: 0.500150, 3: 0.932124, 4: 1.672027, 5: 2.587864, 6: 3.714565, 7: 4.732950, 8: 6.054775, 9: 7.532135,
+               10: 10.128708, 11: 12.203140, 12: 14.214191, 13: 16.837976}
+    exact = var3design(n) + np.array([exact_h[i] for i in n])
+    plt.plot(n, exact, marker='^', markersize=5, label='Theoretical')
+    plt.xlabel(r'$n$')
+    plt.ylabel('Variance')
+    # plt.title('d=2,n=50,N=20000,multilayer')
+    plt.legend()
+    plt.show()
 
     # # XYZ
-    n = np.arange(2, 10)
+    n = np.arange(2, 13)
     Y = []
     for i in n:
         if i == 4:
@@ -159,7 +160,8 @@ if __name__ == "__main__":
         Y.append(var)
     fig = plt.figure(figsize=(8,6))
     n_1 = np.arange(3, 11)
-    exact_lc = {2: -0.000363, 3: -0.001063, 4: 0.111268, 5: 0.147949, 6: 0.147336, 7: 0.059895, 8: 0.057927, 9: 0.081064}
+    exact_lc = {2: -0.000363, 3: -0.001063, 4: 0.111268, 5: 0.147949, 6: 0.147336, 7: 0.059895, 8: 0.057927, 9: 0.081064
+                , 10: 0.021137, 11: -0.011478, 12: 0.499292, 13: -0.361024}
     exact = var3design(n) + np.array([exact_lc[i] for i in n])
     plt.plot(n,Y, marker='o', markersize=5, label='Numerical')
     plt.plot(n, var3design(n), marker='s', markersize=5, label='3-design variance')
